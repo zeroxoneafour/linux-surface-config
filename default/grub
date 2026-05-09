@@ -1,0 +1,9 @@
+GRUB_TIMEOUT=0.01
+GRUB_TIMEOUT_STYLE=hidden
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="rhgb quiet pci=hpiosize=0 i915.force_probe=!46a8 xe.force_probe=46a8"
+GRUB_DISABLE_RECOVERY="true"
+GRUB_ENABLE_BLSCFG=true
