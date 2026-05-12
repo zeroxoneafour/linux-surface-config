@@ -8,9 +8,9 @@ disable_cores() {
     for dev in /sys/devices/system/cpu/cpu[0-9]*/; do
         # I guess this is the only way to distinguish P-cores?
         maxfreq=$(< $dev/cpufreq/cpuinfo_max_freq)
-	# use this line to disable p cores
-	if (( maxfreq >= cpu0_freq)); then
-        #if (( maxfreq < cpu0_freq )); then
+        # use this line to disable p cores
+        #if (( maxfreq >= cpu0_freq)); then
+        if (( maxfreq < cpu0_freq )); then
             echo 0 > $dev/online
         fi
     done
