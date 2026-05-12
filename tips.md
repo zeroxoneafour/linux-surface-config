@@ -6,13 +6,21 @@ These are some extra tips, as well as some rationale behind some of the perhaps 
 
 Alder Lake is disgustingly inefficient by default. However, it doesn't have to be this way, as it is built on both big.LITTLE and a newer fab process.
 
-Disabling e cores is more efficient than disabling p cores for a few reasons -
+There are a few reasons to disable e cores over p cores -
 
 * P cores have hyperthreading and therefore can run 2 threads per core
 * The system by default starts on a p core, meaning one (of the two) must be running at all times
 * P cores are more power efficient when underclocked (as tuned does) due to their optimization for high performance
 
-As such, I configured the low power mode to also disable the e cores entirely. The more observative of you all may realize that this effectively turns the CPU into an 11th gen i5. That may be true, but in this case its not a bad thing.
+However, there are also a few reasons to disable p cores -
+
+* P cores tend to ramp in clocks faster
+* E cores are more efficient for background tasks
+* Running all processes on P cores prevents them from entering sleep when idling
+
+In general, disabling p cores leads to better efficiency while not under load while disabling e cores leads to better efficiency under load. You can choose what you want by modifying the tuned script. By default, it disables e cores.
+
+The tuned script also contains some lines for disabling intel\_pstate, which forcibly locks the cpus to the lowest frequency. This results in a significantly laggier system, but may marginally increase battery life.
 
 Also relevant to Alder Lake is the GRUB settings, which fix some ACPI errors that it likes to spit out.
 
