@@ -9,7 +9,7 @@ Also see [tips.md](tips.md) if you want more tips and explanations.
 ## other things I did
 
 * Installed [linux-surface](https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup)
-  - When you do this, also install and enable `iptsd`.
+  - When you do this, also install and enable `iptsd`. I use a custom fork I made (https://github.com/zeroxoneafour/iptsd/tree/disable-on-stylus) to set a custom stylus responsiveness.
 * Used [this guide](https://github.com/linux-surface/linux-surface/issues/2102) for Fedora 44
 * Got [TouchUp](https://github.com/mityax/gnome-extension-touchup) for Gnome
 * Ran `gsettings set org.gnome.desktop.interface enable-animations false` to disable animations
