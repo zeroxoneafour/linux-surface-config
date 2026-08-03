@@ -35,3 +35,7 @@ There is some additional info on the linux surface wiki about screen flashing wi
 ## wifi roaming
 
 WiFi roaming seems to cause the kernel scheduler to be triggered extremely often, leading to high cpu times. Apparently, setting a BSSID in NetworkManager disables it. I want WiFi roaming for some SSIDs and no roaming for others, so this solution works well for me.
+
+## 60 Hz
+
+Honestly, this is the single biggest battery life improvement you can make. kscreen-doctor is annoying though. I feel like it also reduces the touchscreen/stylus responsiveness measurably. If just watching videos or editing code, this will singlehandedly add an hour to battery life with no drawback.

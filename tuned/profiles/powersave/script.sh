@@ -16,6 +16,18 @@ disable_cores() {
     done
 }
 
+kscreen_doctor() {
+    local target_mode="$1"
+    # get all users with graphical session (seatX)
+    local graphical_users="$(loginctl list-sessions | grep -oP '(\S+)(?= seat\d+)' | sort -u)"
+    for user in $graphical_users; do
+        # make sure that the user has DISPLAY, WAYLAND_DISPLAY, and XAUTHORITY in their systemd
+        # run "systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XAUTHORITY" at startup
+        # have to run this in another systemd-run due to bs dbus errors
+        systemd-run systemd-run --user --machine=$user@ kscreen-doctor "output.eDP-1.mode.$target_mode" 2&> /dev/null
+    done
+}
+
 start() {
     [ "$USB_AUTOSUSPEND" = 1 ] && enable_usb_autosuspend
     enable_wifi_powersave
@@ -23,11 +35,13 @@ start() {
     #echo "power_saving" | tee /sys/class/drm/card?/gt/gt0/slpc_power_profile
     echo "power_saving" | tee /sys/class/drm/card?/device/tile*/gt*/freq*/power_profile
     # disabling select cores (except core 0)
-    disable_cores
+    #disable_cores
     # disable intel_pstate active mode (stop cpu from throttling up ever)
     #echo "passive" >  /sys/devices/system/cpu/intel_pstate/status
     # now we have to set the governor again because setting this to passive undid it
     #echo "powersave" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+    # set screen to 60Hz
+    kscreen_doctor 2880x1920@60
     return 0
 }
 
@@ -37,9 +51,11 @@ stop() {
     #echo "base" | tee /sys/class/drm/card*/gt/gt0/slpc_power_profile
     echo "base" | tee /sys/class/drm/card?/device/tile*/gt*/freq*/power_profile
     # reenable all cores
-    echo 1 | tee /sys/devices/system/cpu/cpu*/online
+    #echo 1 | tee /sys/devices/system/cpu/cpu*/online
     # reenable active mode for intel_pstate
     #echo "active" >  /sys/devices/system/cpu/intel_pstate/status
+    # go back to 120Hz
+    kscreen_doctor 2880x1920@120
     return 0
 }
 
